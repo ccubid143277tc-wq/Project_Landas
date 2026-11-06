@@ -189,13 +189,14 @@ const LoginPage = () => {
                         </View>
 
                         {!isSignUp && (
-                            <Pressable accessibilityRole="button" style={styles.forgotPassword}>
+                            <Pressable accessibilityRole="button" style={styles.forgotPassword} onPress={() => router.push('/forgotpass_page')}>
                                 <Text style={styles.forgotPasswordText}>Forgot password?</Text>
                             </Pressable>
                         )}
 
                         <Pressable
                             accessibilityRole="button"
+                            onPress={() => router.replace('/homepage')}
                             style={styles.submitButton}
                         >
                             <Text style={styles.submitButtonText}>

@@ -23,7 +23,13 @@
           "backgroundColor": "#208AEF"
         }
       ],
-      "expo-font"
+      "expo-font",
+      [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "Allow Landas to show your location on the Mount Megatong map."
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true,
