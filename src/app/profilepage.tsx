@@ -14,8 +14,10 @@ import {
     View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useTheme } from '../contexts/ThemeContext';
 
 const ProfilePage = () => {
+    const { colors } = useTheme();
     const [isEditing, setIsEditing] = useState(false);
     const [name, setName] = useState('Trail Explorer');
     const [email, setEmail] = useState('');
@@ -45,22 +47,25 @@ const ProfilePage = () => {
     };
 
     return (
-        <SafeAreaView edges={['top', 'bottom']} style={styles.safeArea}>
+        <SafeAreaView edges={['top', 'bottom']} style={[styles.safeArea, { backgroundColor: colors.background }]}>
             <KeyboardAvoidingView
                 behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
                 style={styles.keyboardAvoidingView}
             >
-                <View style={styles.page}>
-                    <View style={styles.header}>
+                <View style={[styles.page, { backgroundColor: colors.background }]}>
+                    <View style={[styles.header, { borderBottomColor: colors.border }]}>
                         <Pressable
                             accessibilityLabel="Back to home"
                             accessibilityRole="button"
                             onPress={() => router.replace('/homepage')}
-                            style={styles.backButton}
+                            style={[
+                                styles.backButton,
+                                { backgroundColor: colors.elevatedSurface, borderColor: colors.border },
+                            ]}
                         >
-                            <Text style={styles.backArrow}>‹</Text>
+                            <Text style={[styles.backArrow, { color: colors.foreground }]}>‹</Text>
                         </Pressable>
-                        <Text style={styles.headerTitle}>MY PROFILE</Text>
+                        <Text style={[styles.headerTitle, { color: colors.foreground }]}>MY PROFILE</Text>
                         <View style={styles.headerSpacer} />
                     </View>
 
@@ -92,33 +97,36 @@ const ProfilePage = () => {
                                     {(name.trim()[0] || 'T').toUpperCase()}
                                 </Text>
                             </View>
-                            <Text style={styles.identityName}>{name}</Text>
-                            <Text style={styles.identityCaption}>YOUR ADVENTURE STARTS HERE</Text>
+                            <Text style={[styles.identityName, { color: colors.foreground }]}>{name}</Text>
+                            <Text style={[styles.identityCaption, { color: colors.muted }]}>YOUR ADVENTURE STARTS HERE</Text>
                         </View>
 
                         <View style={styles.sectionHeading}>
                             <View>
-                                <Text style={styles.sectionEyebrow}>YOUR DETAILS</Text>
-                                <Text style={styles.sectionTitle}>Profile information</Text>
+                                <Text style={[styles.sectionEyebrow, { color: colors.subtle }]}>YOUR DETAILS</Text>
+                                <Text style={[styles.sectionTitle, { color: colors.foreground }]}>Profile information</Text>
                             </View>
                             {!isEditing && (
                                 <Pressable
                                     accessibilityRole="button"
                                     onPress={startEditing}
-                                    style={styles.editButton}
+                                    style={[
+                                        styles.editButton,
+                                        { backgroundColor: colors.elevatedSurface, borderColor: colors.border },
+                                    ]}
                                 >
-                                    <Text style={styles.editButtonText}>EDIT</Text>
+                                    <Text style={[styles.editButtonText, { color: colors.accent }]}>EDIT</Text>
                                 </Pressable>
                             )}
                         </View>
 
-                        <View style={styles.detailsCard}>
+                        <View style={[styles.detailsCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
                             <View style={styles.detailRow}>
-                                <View style={styles.detailIconWrap}>
-                                    <Text style={styles.detailIcon}>♙</Text>
+                                <View style={[styles.detailIconWrap, { backgroundColor: colors.accentSoft }]}>
+                                    <Text style={[styles.detailIcon, { color: colors.accent }]}>♙</Text>
                                 </View>
                                 <View style={styles.detailContent}>
-                                    <Text style={styles.detailLabel}>NAME</Text>
+                                    <Text style={[styles.detailLabel, { color: colors.muted }]}>NAME</Text>
                                     {isEditing ? (
                                         <TextInput
                                             accessibilityLabel="Your name"
@@ -127,21 +135,21 @@ const ProfilePage = () => {
                                             placeholder="Your name"
                                             placeholderTextColor="#737A72"
                                             returnKeyType="next"
-                                            style={styles.detailInput}
+                                            style={[styles.detailInput, { color: colors.foreground, backgroundColor: colors.input }]}
                                             value={draftName}
                                         />
                                     ) : (
-                                        <Text style={styles.detailValue}>{name}</Text>
+                                        <Text style={[styles.detailValue, { color: colors.foreground }]}>{name}</Text>
                                     )}
                                 </View>
                             </View>
-                            <View style={styles.rowDivider} />
+                            <View style={[styles.rowDivider, { backgroundColor: colors.border }]} />
                             <View style={styles.detailRow}>
-                                <View style={styles.detailIconWrap}>
-                                    <Text style={styles.detailIcon}>✉</Text>
+                                <View style={[styles.detailIconWrap, { backgroundColor: colors.accentSoft }]}>
+                                    <Text style={[styles.detailIcon, { color: colors.accent }]}>✉</Text>
                                 </View>
                                 <View style={styles.detailContent}>
-                                    <Text style={styles.detailLabel}>EMAIL ADDRESS</Text>
+                                    <Text style={[styles.detailLabel, { color: colors.muted }]}>EMAIL ADDRESS</Text>
                                     {isEditing ? (
                                         <TextInput
                                             accessibilityLabel="Email address"
@@ -152,11 +160,11 @@ const ProfilePage = () => {
                                             placeholder="Add your email"
                                             placeholderTextColor="#737A72"
                                             returnKeyType="done"
-                                            style={styles.detailInput}
+                                            style={[styles.detailInput, { color: colors.foreground, backgroundColor: colors.input }]}
                                             value={draftEmail}
                                         />
                                     ) : (
-                                        <Text style={[styles.detailValue, !email && styles.mutedValue]}>
+                                        <Text style={[styles.detailValue, { color: colors.foreground }, !email && [styles.mutedValue, { color: colors.muted }]]}>
                                             {email || 'Not added'}
                                         </Text>
                                     )}
@@ -169,29 +177,32 @@ const ProfilePage = () => {
                                 <Pressable
                                     accessibilityRole="button"
                                     onPress={() => setIsEditing(false)}
-                                    style={styles.cancelButton}
+                                    style={[
+                                        styles.cancelButton,
+                                        { backgroundColor: colors.elevatedSurface, borderColor: colors.border },
+                                    ]}
                                 >
-                                    <Text style={styles.cancelButtonText}>CANCEL</Text>
+                                    <Text style={[styles.cancelButtonText, { color: colors.secondary }]}>CANCEL</Text>
                                 </Pressable>
                                 <Pressable
                                     accessibilityRole="button"
                                     onPress={saveProfile}
-                                    style={styles.saveProfileButton}
+                                    style={[styles.saveProfileButton, { backgroundColor: colors.accent }]}
                                 >
-                                    <Text style={styles.saveProfileButtonText}>SAVE CHANGES</Text>
+                                    <Text style={[styles.saveProfileButtonText, { color: colors.accentText }]}>SAVE CHANGES</Text>
                                 </Pressable>
                             </View>
                         )}
 
                         <View style={styles.sectionHeading}>
                             <View>
-                                <Text style={styles.sectionEyebrow}>YOUR NEXT ADVENTURE</Text>
-                                <Text style={styles.sectionTitle}>Mount Megatong</Text>
+                                <Text style={[styles.sectionEyebrow, { color: colors.subtle }]}>YOUR NEXT ADVENTURE</Text>
+                                <Text style={[styles.sectionTitle, { color: colors.foreground }]}>Mount Megatong</Text>
                             </View>
-                            <Text style={styles.mountainIcon}>⌁</Text>
+                            <Text style={[styles.mountainIcon, { color: colors.accent }]}>⌁</Text>
                         </View>
 
-                        <View style={styles.destinationCard}>
+                        <View style={[styles.destinationCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
                             <ImageBackground
                                 accessibilityLabel="Mountain destination"
                                 imageStyle={styles.destinationImage}
@@ -211,33 +222,33 @@ const ProfilePage = () => {
                             <Pressable
                                 accessibilityRole="button"
                                 onPress={() => router.replace('/homepage')}
-                                style={styles.destinationLink}
+                                style={[styles.destinationLink, { backgroundColor: colors.surface }]}
                             >
-                                <Text style={styles.destinationLinkText}>BACK TO YOUR DESTINATION</Text>
-                                <Text style={styles.destinationArrow}>→</Text>
+                                <Text style={[styles.destinationLinkText, { color: colors.secondary }]}>BACK TO YOUR DESTINATION</Text>
+                                <Text style={[styles.destinationArrow, { color: colors.accent }]}>→</Text>
                             </Pressable>
                         </View>
 
-                        <View style={styles.noteCard}>
-                            <Text style={styles.noteIcon}>ⓘ</Text>
-                            <Text style={styles.noteText}>
+                        <View style={[styles.noteCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+                            <Text style={[styles.noteIcon, { color: colors.secondary }]}>ⓘ</Text>
+                            <Text style={[styles.noteText, { color: colors.secondary }]}>
                                 Profile editing is a preview. Your details aren’t synced to an account yet.
                             </Text>
                         </View>
                     </ScrollView>
 
-                    <View style={styles.bottomBar}>
+                    <View style={[styles.bottomBar, { backgroundColor: colors.surface, borderTopColor: colors.border }]}>
                         <Pressable
                             accessibilityRole="button"
                             onPress={() => router.replace('/homepage')}
                             style={styles.homeButton}
                         >
-                            <Text style={styles.homeIcon}>⌂</Text>
-                            <Text style={styles.homeLabel}>HOME</Text>
+                            <Text style={[styles.homeIcon, { color: colors.subtle }]}>⌂</Text>
+                            <Text style={[styles.homeLabel, { color: colors.subtle }]}>HOME</Text>
                         </Pressable>
                         <View style={styles.profileTab}>
-                            <Text style={styles.selectedProfileIcon}>♙</Text>
-                            <Text style={styles.selectedProfileLabel}>PROFILE</Text>
+                            <Text style={[styles.selectedProfileIcon, { color: colors.accent }]}>♙</Text>
+                            <Text style={[styles.selectedProfileLabel, { color: colors.accent }]}>PROFILE</Text>
                         </View>
                     </View>
                 </View>

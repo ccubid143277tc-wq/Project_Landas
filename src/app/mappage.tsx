@@ -16,6 +16,7 @@ import WebView, {
     type WebViewMessageEvent,
     type WebViewProps,
 } from 'react-native-webview';
+import { useTheme } from '../contexts/ThemeContext';
 
 const SUMMIT = { latitude: 7.5885859, longitude: 125.5493518 } as const;
 const openTerrainMapUrl = (
@@ -157,6 +158,7 @@ type MapMessage = {
 };
 
 const MapPage = () => {
+    const { colors } = useTheme();
     const mapRef = useRef<WebView<WebViewProps>>(null);
     const [mapReady, setMapReady] = useState(false);
     const [mapStyle, setMapStyle] = useState<MapStyle>('satellite');
@@ -258,28 +260,34 @@ const MapPage = () => {
     };
 
     return (
-        <SafeAreaView edges={['top', 'bottom']} style={styles.safeArea}>
-            <View style={styles.page}>
-                <View style={styles.header}>
+        <SafeAreaView edges={['top', 'bottom']} style={[styles.safeArea, { backgroundColor: colors.background }]}>
+            <View style={[styles.page, { backgroundColor: colors.background }]}>
+                <View style={[styles.header, { borderBottomColor: colors.border }]}>
                     <Pressable
                         accessibilityLabel="Back to home"
                         accessibilityRole="button"
                         onPress={() => router.replace('/homepage')}
-                        style={styles.backButton}
+                        style={[
+                            styles.backButton,
+                            { backgroundColor: colors.elevatedSurface, borderColor: colors.border },
+                        ]}
                     >
-                        <Text style={styles.backArrow}>‹</Text>
+                        <Text style={[styles.backArrow, { color: colors.foreground }]}>‹</Text>
                     </Pressable>
                     <View style={styles.headerCopy}>
-                        <Text style={styles.headerTitle}>TRAIL MAP</Text>
-                        <Text style={styles.headerSubtitle}>MOUNT MEGATONG</Text>
+                        <Text style={[styles.headerTitle, { color: colors.foreground }]}>TRAIL MAP</Text>
+                        <Text style={[styles.headerSubtitle, { color: colors.muted }]}>MOUNT MEGATONG</Text>
                     </View>
                     <Pressable
                         accessibilityLabel="Center map on Mount Megatong"
                         accessibilityRole="button"
                         onPress={handleCenter}
-                        style={styles.centerButton}
+                        style={[
+                            styles.centerButton,
+                            { backgroundColor: colors.elevatedSurface, borderColor: colors.border },
+                        ]}
                     >
-                        <Text style={styles.centerButtonText}>⌖</Text>
+                        <Text style={[styles.centerButtonText, { color: colors.accent }]}>⌖</Text>
                     </Pressable>
                 </View>
 
@@ -384,36 +392,36 @@ const MapPage = () => {
 
                 </View>
 
-                <View style={styles.destinationCard}>
+                <View style={[styles.destinationCard, { backgroundColor: colors.surface, borderTopColor: colors.border }]}>
                     <View style={styles.cardHeading}>
-                        <View style={styles.peakIcon}>
-                            <Text style={styles.peakIconText}>⌃</Text>
+                        <View style={[styles.peakIcon, { backgroundColor: colors.accentSoft }]}>
+                            <Text style={[styles.peakIconText, { color: colors.accent }]}>⌃</Text>
                         </View>
                         <View style={styles.cardTitleWrap}>
-                            <Text style={styles.cardEyebrow}>MAPPED SUMMIT</Text>
-                            <Text style={styles.cardTitle}>Mount Megatong</Text>
+                            <Text style={[styles.cardEyebrow, { color: colors.subtle }]}>MAPPED SUMMIT</Text>
+                            <Text style={[styles.cardTitle, { color: colors.foreground }]}>Mount Megatong</Text>
                         </View>
-                        <View style={styles.mapReadyBadge}>
-                            <View style={styles.readyDot} />
-                            <Text style={styles.mapReadyText}>
+                        <View style={[styles.mapReadyBadge, { backgroundColor: colors.elevatedSurface, borderColor: colors.border }]}>
+                            <View style={[styles.readyDot, { backgroundColor: colors.accent }]} />
+                            <Text style={[styles.mapReadyText, { color: colors.secondary }]}>
                                 {Platform.OS === 'web' ? 'WEB' : mapReady ? 'LIVE' : 'MAP'}
                             </Text>
                         </View>
                     </View>
-                    <Text style={styles.cardDescription}>{mapStatus}</Text>
-                    <Text style={styles.routeNotice}>
+                    <Text style={[styles.cardDescription, { color: colors.secondary }]}>{mapStatus}</Text>
+                    <Text style={[styles.routeNotice, { color: colors.muted }]}>
                         Summit pin from OpenStreetMap · Verified hiking route not available
                     </Text>
-                    <Text style={styles.mapAttribution}>
+                    <Text style={[styles.mapAttribution, { color: colors.muted }]}>
                         Satellite © Esri · Topo © OpenStreetMap/SRTM/OpenTopoMap · Elevation © Mapterhorn
                     </Text>
                     <Pressable
                         accessibilityRole="button"
                         onPress={() => openMap()}
-                        style={styles.openMapButton}
+                        style={[styles.openMapButton, { backgroundColor: colors.accent }]}
                     >
-                        <Text style={styles.openMapButtonText}>OPEN SUMMIT IN OPENTOPOMAP</Text>
-                        <Text style={styles.openMapArrow}>↗</Text>
+                        <Text style={[styles.openMapButtonText, { color: colors.accentText }]}>OPEN SUMMIT IN OPENTOPOMAP</Text>
+                        <Text style={[styles.openMapArrow, { color: colors.accentText }]}>↗</Text>
                     </Pressable>
                 </View>
             </View>

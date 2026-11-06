@@ -29,7 +29,8 @@
         {
           "locationWhenInUsePermission": "Allow Landas to show your location on the Mount Megatong map."
         }
-      ]
+      ],
+      "expo-image"
     ],
     "experiments": {
       "typedRoutes": true,

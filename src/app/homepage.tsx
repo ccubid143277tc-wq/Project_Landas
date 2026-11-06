@@ -10,19 +10,21 @@ import {
     View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useTheme } from '../contexts/ThemeContext';
 
 type HomeTab = 'Home' | 'Trail Guide' | 'Saved';
 
 const Homepage = () => {
     const [activeTab, setActiveTab] = useState<HomeTab>('Home');
     const [isSaved, setIsSaved] = useState(false);
+    const { colors } = useTheme();
 
     const showHome = activeTab === 'Home';
     const showGuide = activeTab === 'Trail Guide';
 
     return (
-        <SafeAreaView edges={['top', 'bottom']} style={styles.safeArea}>
-            <View style={styles.page}>
+        <SafeAreaView edges={['top', 'bottom']} style={[styles.safeArea, { backgroundColor: colors.background }]}>
+            <View style={[styles.page, { backgroundColor: colors.background }]}>
                 <ScrollView
                     contentContainerStyle={styles.scrollContent}
                     showsVerticalScrollIndicator={false}
@@ -30,27 +32,37 @@ const Homepage = () => {
                     <View style={styles.header}>
                         <View>
                             <Text style={styles.wordmark}>
-                                <Text style={styles.wordmarkLight}>LAN</Text>
-                                <Text style={styles.wordmarkGreen}>DAS</Text>
+                                <Text style={[styles.wordmarkLight, { color: colors.foreground }]}>LAN</Text>
+                                <Text style={[styles.wordmarkGreen, { color: colors.accent }]}>DAS</Text>
                             </Text>
-                            <Text style={styles.headerCaption}>YOUR MOUNTAIN COMPANION</Text>
+                            <Text style={[styles.headerCaption, { color: colors.muted }]}>YOUR MOUNTAIN COMPANION</Text>
                         </View>
-                        <Pressable
-                            accessibilityLabel="Open your profile"
-                            accessibilityRole="button"
-                            onPress={() => router.push('/profilepage')}
-                            style={styles.profileBadge}
-                        >
-                            <Text style={styles.profileInitials}>L</Text>
-                        </Pressable>
+                        <View style={styles.headerActions}>
+                            <Pressable
+                                accessibilityLabel="Open settings"
+                                accessibilityRole="button"
+                                onPress={() => router.push('/settings_page')}
+                                style={[styles.settingsBadge, { backgroundColor: colors.elevatedSurface, borderColor: colors.border }]}
+                            >
+                                <Text style={[styles.settingsIcon, { color: colors.accent }]}>⚙</Text>
+                            </Pressable>
+                            <Pressable
+                                accessibilityLabel="Open your profile"
+                                accessibilityRole="button"
+                                onPress={() => router.push('/profilepage')}
+                                style={[styles.profileBadge, { backgroundColor: colors.elevatedSurface, borderColor: colors.border }]}
+                            >
+                                <Text style={[styles.profileInitials, { color: colors.accent }]}>L</Text>
+                            </Pressable>
+                        </View>
                     </View>
 
                     {showHome && (
                         <>
                             <View style={styles.intro}>
-                                <Text style={styles.eyebrow}>YOUR LOCAL ADVENTURE</Text>
-                                <Text style={styles.introTitle}>One mountain.{'\n'}A thousand reasons to go.</Text>
-                                <Text style={styles.introBody}>
+                                <Text style={[styles.eyebrow, { color: colors.accent }]}>YOUR LOCAL ADVENTURE</Text>
+                                <Text style={[styles.introTitle, { color: colors.foreground }]}>One mountain.{'\n'}A thousand reasons to go.</Text>
+                                <Text style={[styles.introBody, { color: colors.secondary }]}>
                                     Get ready for your Mount Megatong adventure.
                                 </Text>
                             </View>
@@ -106,30 +118,30 @@ const Homepage = () => {
 
                             <View style={styles.sectionHeading}>
                                 <View>
-                                    <Text style={styles.sectionEyebrow}>MAKE IT A GOOD HIKE</Text>
-                                    <Text style={styles.sectionTitle}>Before you set out</Text>
+                                    <Text style={[styles.sectionEyebrow, { color: colors.subtle }]}>MAKE IT A GOOD HIKE</Text>
+                                    <Text style={[styles.sectionTitle, { color: colors.foreground }]}>Before you set out</Text>
                                 </View>
-                                <Text style={styles.sectionDecoration}>✳</Text>
+                                <Text style={[styles.sectionDecoration, { color: colors.accent }]}>✳</Text>
                             </View>
 
-                            <View style={styles.tipCard}>
-                                <View style={styles.tipIconWrap}>
-                                    <Text style={styles.tipIcon}>↗</Text>
+                            <View style={[styles.tipCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+                                <View style={[styles.tipIconWrap, { backgroundColor: colors.accentSoft }]}>
+                                    <Text style={[styles.tipIcon, { color: colors.accent }]}>↗</Text>
                                 </View>
                                 <View style={styles.tipCopy}>
-                                    <Text style={styles.tipTitle}>Check local trail updates</Text>
-                                    <Text style={styles.tipBody}>
+                                    <Text style={[styles.tipTitle, { color: colors.foreground }]}>Check local trail updates</Text>
+                                    <Text style={[styles.tipBody, { color: colors.secondary }]}>
                                         Confirm current conditions and access with a local guide before leaving.
                                     </Text>
                                 </View>
                             </View>
-                            <View style={styles.tipCard}>
-                                <View style={styles.tipIconWrap}>
-                                    <Text style={styles.tipIcon}>◎</Text>
+                            <View style={[styles.tipCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+                                <View style={[styles.tipIconWrap, { backgroundColor: colors.accentSoft }]}>
+                                    <Text style={[styles.tipIcon, { color: colors.accent }]}>◎</Text>
                                 </View>
                                 <View style={styles.tipCopy}>
-                                    <Text style={styles.tipTitle}>Share your plans</Text>
-                                    <Text style={styles.tipBody}>
+                                    <Text style={[styles.tipTitle, { color: colors.foreground }]}>Share your plans</Text>
+                                    <Text style={[styles.tipBody, { color: colors.secondary }]}>
                                         Let someone know your route and when you expect to return.
                                     </Text>
                                 </View>
@@ -138,10 +150,13 @@ const Homepage = () => {
                             <Pressable
                                 accessibilityRole="button"
                                 onPress={() => setActiveTab('Trail Guide')}
-                                style={styles.secondaryButton}
+                                style={[
+                                    styles.secondaryButton,
+                                    { backgroundColor: colors.elevatedSurface, borderColor: colors.border },
+                                ]}
                             >
-                                <Text style={styles.secondaryButtonText}>PREPARE FOR YOUR HIKE</Text>
-                                <Text style={styles.secondaryButtonArrow}>→</Text>
+                                <Text style={[styles.secondaryButtonText, { color: colors.foreground }]}>PREPARE FOR YOUR HIKE</Text>
+                                <Text style={[styles.secondaryButtonArrow, { color: colors.accent }]}>→</Text>
                             </Pressable>
                         </>
                     )}
@@ -149,9 +164,9 @@ const Homepage = () => {
                     {showGuide && (
                         <>
                             <View style={styles.pageIntro}>
-                                <Text style={styles.eyebrow}>PLAN WITH CARE</Text>
-                                <Text style={styles.pageTitle}>Mount Megatong</Text>
-                                <Text style={styles.pageDescription}>
+                                <Text style={[styles.eyebrow, { color: colors.accent }]}>PLAN WITH CARE</Text>
+                                <Text style={[styles.pageTitle, { color: colors.foreground }]}>Mount Megatong</Text>
+                                <Text style={[styles.pageDescription, { color: colors.secondary }]}>
                                     A few thoughtful checks can help you have a safer, more enjoyable hike.
                                 </Text>
                             </View>
@@ -172,16 +187,16 @@ const Homepage = () => {
                                 </View>
                             </View>
 
-                            <View style={styles.noticeCard}>
-                                <Text style={styles.noticeEyebrow}>LOCAL TRAIL INFORMATION</Text>
-                                <Text style={styles.noticeTitle}>Confirm the details before you go.</Text>
-                                <Text style={styles.noticeBody}>
+                            <View style={[styles.noticeCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+                                <Text style={[styles.noticeEyebrow, { color: colors.accent }]}>LOCAL TRAIL INFORMATION</Text>
+                                <Text style={[styles.noticeTitle, { color: colors.foreground }]}>Confirm the details before you go.</Text>
+                                <Text style={[styles.noticeBody, { color: colors.secondary }]}>
                                     Trail distance, difficulty, access, and conditions can change. Check with local guides or the relevant local office for current information.
                                 </Text>
                             </View>
 
-                            <Text style={styles.checklistHeading}>Your pre-hike checklist</Text>
-                            <View style={styles.checklist}>
+                            <Text style={[styles.checklistHeading, { color: colors.foreground }]}>Your pre-hike checklist</Text>
+                            <View style={[styles.checklist, { backgroundColor: colors.surface, borderColor: colors.border }]}>
                                 <ChecklistItem
                                     number="01"
                                     title="Ask about current conditions"
@@ -208,12 +223,15 @@ const Homepage = () => {
                             <Pressable
                                 accessibilityRole="button"
                                 onPress={() => setIsSaved(!isSaved)}
-                                style={styles.secondaryButton}
+                                style={[
+                                    styles.secondaryButton,
+                                    { backgroundColor: colors.elevatedSurface, borderColor: colors.border },
+                                ]}
                             >
-                                <Text style={styles.secondaryButtonText}>
+                                <Text style={[styles.secondaryButtonText, { color: colors.foreground }]}>
                                     {isSaved ? 'SAVED TO YOUR LIST' : 'SAVE THIS DESTINATION'}
                                 </Text>
-                                <Text style={[styles.secondaryButtonArrow, isSaved && styles.savedIcon]}>
+                                <Text style={[styles.secondaryButtonArrow, { color: colors.accent }, isSaved && styles.savedIcon]}>
                                     {isSaved ? '♥' : '♡'}
                                 </Text>
                             </Pressable>
@@ -223,9 +241,9 @@ const Homepage = () => {
                     {activeTab === 'Saved' && (
                         <>
                             <View style={styles.pageIntro}>
-                                <Text style={styles.eyebrow}>YOUR COLLECTION</Text>
-                                <Text style={styles.pageTitle}>Saved destination</Text>
-                                <Text style={styles.pageDescription}>
+                                <Text style={[styles.eyebrow, { color: colors.accent }]}>YOUR COLLECTION</Text>
+                                <Text style={[styles.pageTitle, { color: colors.foreground }]}>Saved destination</Text>
+                                <Text style={[styles.pageDescription, { color: colors.secondary }]}>
                                     Keep Mount Megatong close while you plan your next hike.
                                 </Text>
                             </View>
@@ -233,7 +251,10 @@ const Homepage = () => {
                                 <Pressable
                                     accessibilityRole="button"
                                     onPress={() => setActiveTab('Trail Guide')}
-                                    style={styles.savedDestinationCard}
+                                    style={[
+                                        styles.savedDestinationCard,
+                                        { backgroundColor: colors.surface, borderColor: colors.border },
+                                    ]}
                                 >
                                     <Image
                                         accessibilityLabel="Mountain destination"
@@ -242,17 +263,17 @@ const Homepage = () => {
                                         style={styles.savedDestinationImage}
                                     />
                                     <View style={styles.savedDestinationCopy}>
-                                        <Text style={styles.sectionEyebrow}>YOUR NEXT ADVENTURE</Text>
-                                        <Text style={styles.savedDestinationName}>Mount Megatong</Text>
-                                        <Text style={styles.savedDestinationLink}>OPEN TRAIL GUIDE  →</Text>
+                                        <Text style={[styles.sectionEyebrow, { color: colors.subtle }]}>YOUR NEXT ADVENTURE</Text>
+                                        <Text style={[styles.savedDestinationName, { color: colors.foreground }]}>Mount Megatong</Text>
+                                        <Text style={[styles.savedDestinationLink, { color: colors.accent }]}>OPEN TRAIL GUIDE  →</Text>
                                     </View>
-                                    <Text style={styles.savedHeart}>♥</Text>
+                                    <Text style={[styles.savedHeart, { color: colors.accent }]}>♥</Text>
                                 </Pressable>
                             ) : (
-                                <View style={styles.emptyState}>
-                                    <Text style={styles.emptyIcon}>♡</Text>
-                                    <Text style={styles.emptyTitle}>Nothing saved just yet</Text>
-                                    <Text style={styles.emptyDescription}>
+                                <View style={[styles.emptyState, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+                                    <Text style={[styles.emptyIcon, { color: colors.accent }]}>♡</Text>
+                                    <Text style={[styles.emptyTitle, { color: colors.foreground }]}>Nothing saved just yet</Text>
+                                    <Text style={[styles.emptyDescription, { color: colors.secondary }]}>
                                         Save Mount Megatong from Home or the Trail Guide to keep it here.
                                     </Text>
                                     <Pressable
@@ -268,7 +289,7 @@ const Homepage = () => {
                     )}
                 </ScrollView>
 
-                <View style={styles.bottomBar}>
+                <View style={[styles.bottomBar, { backgroundColor: colors.surface, borderTopColor: colors.border }]}>
                     {(['Home', 'Map', 'Trail Guide', 'Saved'] as const).map((tab) => {
                         const selected = activeTab === tab;
                         const icon =
@@ -291,10 +312,10 @@ const Homepage = () => {
                                 }
                                 style={styles.navItem}
                             >
-                                <Text style={[styles.navIcon, selected && styles.selectedNavIcon]}>
+                                <Text style={[styles.navIcon, { color: colors.subtle }, selected && { color: colors.accent }]}>
                                     {icon}
                                 </Text>
-                                <Text style={[styles.navLabel, selected && styles.selectedNavLabel]}>
+                                <Text style={[styles.navLabel, { color: colors.subtle }, selected && { color: colors.accent }]}>
                                     {tab}
                                 </Text>
                             </Pressable>
@@ -313,15 +334,19 @@ type ChecklistItemProps = {
     last?: boolean;
 };
 
-const ChecklistItem = ({ number, title, description, last = false }: ChecklistItemProps) => (
-    <View style={[styles.checklistItem, last && styles.lastChecklistItem]}>
-        <Text style={styles.checklistNumber}>{number}</Text>
+const ChecklistItem = ({ number, title, description, last = false }: ChecklistItemProps) => {
+    const { colors } = useTheme();
+
+    return (
+    <View style={[styles.checklistItem, { borderBottomColor: colors.border }, last && styles.lastChecklistItem]}>
+        <Text style={[styles.checklistNumber, { color: colors.accent }]}>{number}</Text>
         <View style={styles.checklistCopy}>
-            <Text style={styles.checklistTitle}>{title}</Text>
-            <Text style={styles.checklistDescription}>{description}</Text>
+            <Text style={[styles.checklistTitle, { color: colors.foreground }]}>{title}</Text>
+            <Text style={[styles.checklistDescription, { color: colors.secondary }]}>{description}</Text>
         </View>
     </View>
-);
+    );
+};
 
 export default Homepage;
 
@@ -361,6 +386,25 @@ const styles = StyleSheet.create({
         fontSize: 8,
         fontWeight: '700',
         letterSpacing: 1.5,
+    },
+    headerActions: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 9,
+    },
+    settingsBadge: {
+        width: 40,
+        height: 40,
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderWidth: 1,
+        borderColor: '#293229',
+        borderRadius: 20,
+        backgroundColor: '#151A15',
+    },
+    settingsIcon: {
+        color: '#19F000',
+        fontSize: 20,
     },
     profileBadge: {
         width: 40,
